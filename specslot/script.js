@@ -11,6 +11,7 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const PLOT = {ours:'#5d2cd6',baseline:'#8a849e',secondary:'#6f85a8',ink:'#1a1433',muted:'#6d6689',grid:'#e2dcf3',axis:'#b4acc8',surface:'#ffffff'};
 function enterPanel(element) {
   if(reducedMotion.matches) return;
   element.classList.remove('panel-enter');
@@ -63,27 +64,38 @@ const stories = {
   t2i: { headline: '62.21 DPG-Bench.<br>40.6% fewer FLOPs.', description: 'SpecSlot-K4 improves DPG-Bench by 1.06 points over JiT-B/8, with no T2I-specific change to the allocation and routing architecture.', takeaway: 'GenEval improves over JiT-B/16; JiT-B/8 retains the highest GenEval score among these models.' },
 };
 
+function metricHeader(legend=false) {
+  return `<div class="plot-header"><div class="plot-metric"><strong>FID-50K ↓</strong><span>Image quality · lower is better</span></div>${legend?'<div class="plot-legend" aria-label="Model families"><span><i class="plot-key ours" aria-hidden="true"></i>SpecSlot</span><span><i class="plot-key baseline" aria-hidden="true"></i>JiT</span><span><i class="plot-key sf" aria-hidden="true"></i>SF</span></div>':''}</div>`;
+}
+function computeLabel() {
+  return '<div class="plot-x-label"><strong>Compute · GFLOPs</strong><span>← Lower compute · conditional forward pass</span></div>';
+}
+function plotPoint(px,py,ours,color) {
+  return ours?`<rect x="${px-4.5}" y="${py-4.5}" width="9" height="9" transform="rotate(45 ${px} ${py})" fill="${color}" stroke="${PLOT.surface}" stroke-width="1.3"/>`:`<circle cx="${px}" cy="${py}" r="4.5" fill="${color}" stroke="${PLOT.surface}" stroke-width="1.3"/>`;
+}
 function scatter(data) {
-  const compact=window.matchMedia('(max-width:700px)').matches;
-  const w=compact?Math.max(310,$('#result-chart').clientWidth):640, h=compact?320:360, left=compact?30:53, right=compact?12:24, top=46, bottom=57;
+  const compact=window.matchMedia('(max-width:700px)').matches||$('#result-chart').clientWidth<500;
+  const w=Math.max(290,$('#result-chart').clientWidth), h=compact?305:330, left=compact?32:42, right=compact?12:20, top=15, bottom=35;
   const ymax=data.id === 'imagenet512' ? 18 : 9;
   const x=(n)=>left+n/240*(w-left-right);
   const y=(n)=>h-bottom-n/ymax*(h-top-bottom);
   const yticks=data.id === 'imagenet512' ? [0,3,6,9,12,15,18] : [0,2,4,6,8];
   const labelOffsets=compact ? (data.id==='imagenet512' ? [[7,-10,'start'],[-5,23,'end'],[-6,24,'end'],[8,-10,'start'],[-8,35,'end'],[8,23,'start']] : [[-5,30,'end'],[-5,-12,'end'],[4,-18,'start'],[-8,44,'end'],[4,-10,'start'],[10,23,'start']]) : (data.id==='imagenet512' ? [[9,-10,'start'],[-8,25,'end'],[-8,26,'end'],[12,-12,'start'],[-12,32,'end'],[12,24,'start']] : [[-9,31,'end'],[-8,-14,'end'],[10,-20,'start'],[-8,31,'end'],[8,-13,'start'],[12,25,'start']]);
   let content=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-labelledby="plot-title plot-desc"><title id="plot-title">${data.title}: FID versus forward compute</title><desc id="plot-desc">${data.rows.map(r=>`${r.model}: ${r.fid} FID at ${r.gflops} GFLOPs`).join('; ')}. Lower is better on both axes. The complete data table is available below.</desc>`;
-  content+=`<circle cx="${w-208}" cy="15" r="5" fill="#526d60"/><text x="${w-196}" y="19" fill="#526d60" font-size="11">SpecSlot</text><circle cx="${w-113}" cy="15" r="4" fill="#81949d"/><text x="${w-101}" y="19" fill="#66726b" font-size="11">Baselines</text>`;
-  for(const n of yticks) content+=`<line x1="${left}" y1="${y(n)}" x2="${w-right}" y2="${y(n)}" stroke="#dce0d6" stroke-width="1"/><text x="${left-12}" y="${y(n)+4}" text-anchor="end" fill="#66726b" font-size="12">${n}</text>`;
-  for(const n of [0,50,100,150,200]) content+=`<line x1="${x(n)}" y1="${h-bottom}" x2="${x(n)}" y2="${h-bottom+5}" stroke="#aebaaa"/><text x="${x(n)}" y="${h-bottom+23}" text-anchor="middle" fill="#66726b" font-size="12">${n}</text>`;
-  content+=`<text x="${left}" y="20" fill="#66726b" font-size="12">FID ↓</text><text x="${(left+w-right)/2}" y="${h-8}" text-anchor="middle" fill="#66726b" font-size="12">Conditional forward GFLOPs ↓</text>`;
+  for(const n of yticks) content+=`<line x1="${left}" y1="${y(n)}" x2="${w-right}" y2="${y(n)}" stroke="${PLOT.grid}" stroke-width="1"/><text x="${left-12}" y="${y(n)+4}" text-anchor="end" fill="${PLOT.muted}" font-size="12">${n}</text>`;
+  content+=`<path d="M${left} ${top}V${h-bottom}H${w-right}" fill="none" stroke="${PLOT.axis}" stroke-width="1"/>`;
+  for(const n of [0,50,100,150,200]) content+=`<line x1="${x(n)}" y1="${h-bottom}" x2="${x(n)}" y2="${h-bottom+5}" stroke="${PLOT.axis}"/><text x="${x(n)}" y="${h-bottom+23}" text-anchor="middle" fill="${PLOT.muted}" font-size="12">${n}</text>`;
+  content+=`<text x="${left+12}" y="${h-bottom-14}" fill="${PLOT.muted}" font-size="12">↙ Lower FID + lower compute</text>`;
   data.rows.forEach((r,i)=>{
     const [dx,dy,anchor]=labelOffsets[i];
-    const color=r.ours?'#526d60':r.model.startsWith('SF')?'#a7806b':'#81949d';
+    const color=r.ours?PLOT.ours:r.model.startsWith('SF')?PLOT.secondary:PLOT.baseline;
     const name=r.ours ? (r.model.includes('K2')?(compact?'K2':'SpecSlot-K2'):(compact?'K4':'SpecSlot-K4')) : r.model;
-    if(r.ours)content+=`<circle cx="${x(r.gflops)}" cy="${y(r.fid)}" r="12" fill="#526d6018"/>`;
-    content+=`<circle cx="${x(r.gflops)}" cy="${y(r.fid)}" r="${r.ours?5.5:4.5}" fill="${color}" stroke="#f5f3ed" stroke-width="1.5"/><text x="${x(r.gflops)+dx}" y="${y(r.fid)+dy}" text-anchor="${anchor}" fill="${r.ours?'#385245':'#56655c'}" font-size="12" font-weight="${r.ours?650:450}">${name}</text>`;
+    const px=x(r.gflops),py=y(r.fid),details=`${r.model}: FID ${r.fid.toFixed(2)}; conditional forward ${r.gflops.toFixed(2)} GFLOPs`;
+    content+=`<g class="plot-point" tabindex="0" role="img" aria-label="${escapeHTML(details)}" data-fid="${r.fid}" data-gflops="${r.gflops}"><title>${escapeHTML(details)}</title>`;
+    if(data.id==='imagenet256'&&[0,2,3,5].includes(i)) content+=`<line x1="${px}" y1="${py}" x2="${px+dx+(anchor==='end'?3:-3)}" y2="${py+dy-4}" stroke="${PLOT.axis}" stroke-width=".8"/>`;
+    content+=plotPoint(px,py,r.ours,color)+`<text x="${px+dx}" y="${py+dy}" text-anchor="${anchor}" fill="${r.ours?PLOT.ours:PLOT.ink}" font-size="12" font-weight="${r.ours?650:450}">${name}</text></g>`;
   });
-  return content+'</svg>';
+  return metricHeader(true)+content+'</svg>'+computeLabel();
 }
 
 function barChart(data) {
@@ -125,7 +137,7 @@ function evidenceTable(data) {
 function evidencePlot(id) {
   const data=MECHANISMS[id],carrier=id==='carrier';
   const w=Math.max(300,$('#evidence-plot').clientWidth),h=330;
-  const left=44,right=20,top=43,bottom=57;
+  const left=44,right=20,top=18,bottom=37;
   const xmin=carrier?6.4:100,xmax=carrier?7.4:250,ymin=carrier?200:5.5,ymax=carrier?225:7.5;
   const x=n=>left+(n-xmin)/(xmax-xmin)*(w-left-right);
   const y=n=>h-bottom-(n-ymin)/(ymax-ymin)*(h-top-bottom);
@@ -133,18 +145,17 @@ function evidencePlot(id) {
   const yticks=carrier?[200,205,210,215,220,225]:[5.5,6,6.5,7,7.5];
   const description=data.rows.map(r=>`${r.model}: FID ${r.fid}, IS ${r.is}${carrier?'':`, ${r.gflops} forward GFLOPs, ${r.throughput} images per second`}`).join('; ');
   let svg=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-labelledby="evidence-title evidence-desc"><title id="evidence-title">${carrier?'Carrier identity: FID and IS':'Routing: FID and forward compute'}</title><desc id="evidence-desc">${escapeHTML(description)}. Exact values are also shown in the adjacent table.</desc>`;
-  svg+=`<text x="${left}" y="20" fill="#5e6b63" font-size="12">${carrier?'IS ↑':'FID ↓'}</text>`;
-  for(const n of yticks)svg+=`<line x1="${left}" x2="${w-right}" y1="${y(n)}" y2="${y(n)}" stroke="#d0d8c9" stroke-width=".8"/><text x="${left-10}" y="${y(n)+4}" text-anchor="end" fill="#5e6b63" font-size="11">${n}</text>`;
-  for(const n of xticks)svg+=`<line x1="${x(n)}" x2="${x(n)}" y1="${h-bottom}" y2="${h-bottom+4}" stroke="#acb9a9"/><text x="${x(n)}" y="${h-bottom+21}" text-anchor="middle" fill="#5e6b63" font-size="11">${carrier?n.toFixed(1):n}</text>`;
-  svg+=`<text x="${(left+w-right)/2}" y="${h-9}" text-anchor="middle" fill="#5e6b63" font-size="12">${carrier?'FID ↓':'Conditional forward GFLOPs ↓'}</text>`;
+  for(const n of yticks)svg+=`<line x1="${left}" x2="${w-right}" y1="${y(n)}" y2="${y(n)}" stroke="${PLOT.grid}" stroke-width=".8"/><text x="${left-10}" y="${y(n)+4}" text-anchor="end" fill="${PLOT.muted}" font-size="12">${n}</text>`;
+  svg+=`<path d="M${left} ${top}V${h-bottom}H${w-right}" fill="none" stroke="${PLOT.axis}" stroke-width="1"/>`;
+  for(const n of xticks)svg+=`<line x1="${x(n)}" x2="${x(n)}" y1="${h-bottom}" y2="${h-bottom+4}" stroke="${PLOT.axis}"/><text x="${x(n)}" y="${h-bottom+21}" text-anchor="middle" fill="${PLOT.muted}" font-size="12">${carrier?n.toFixed(1):n}</text>`;
   const offsets=carrier?[[11,-12,'start'],[10,-11,'start'],[-9,23,'end'],[11,22,'start']]:[[12,24,'start'],[12,-12,'start'],[13,4,'start'],[-9,-13,'end']];
   data.rows.forEach((r,i)=>{
     const px=x(carrier?r.fid:r.gflops),py=y(carrier?r.is:r.fid),[dx,dy,anchor]=offsets[i];
     const name=carrier?`Slot ${i}`:r.model;
-    if(i===0)svg+=`<circle cx="${px}" cy="${py}" r="12" fill="#526d6018"/>`;
-    svg+=`<circle cx="${px}" cy="${py}" r="${i===0?5.5:4.5}" fill="${i===0?'#526d60':'#81949d'}" stroke="#eeeee7" stroke-width="1.5"/><text x="${px+dx}" y="${py+dy}" text-anchor="${anchor}" fill="${i===0?'#385245':'#56655c'}" font-size="12" font-weight="${i===0?650:450}">${escapeHTML(name)}</text>`;
+    const details=`${r.model}: FID ${r.fid.toFixed(2)}; conditional forward ${r.gflops?.toFixed(2)} GFLOPs`;
+    svg+=`<g class="plot-point" tabindex="0" role="img" aria-label="${escapeHTML(details)}"><title>${escapeHTML(details)}</title>`+plotPoint(px,py,i===0,i===0?PLOT.ours:PLOT.baseline)+`<text x="${px+dx}" y="${py+dy}" text-anchor="${anchor}" fill="${i===0?PLOT.ours:PLOT.ink}" font-size="12" font-weight="${i===0?650:450}">${escapeHTML(name)}</text></g>`;
   });
-  $('#evidence-plot').innerHTML=svg+'</svg>';
+  $('#evidence-plot').innerHTML=metricHeader()+svg+'</svg>'+computeLabel();
 }
 function basisChart(index) {
   const data=BASIS_SCALING[index];
@@ -152,12 +163,12 @@ function basisChart(index) {
   const w=compact?Math.max(310,$('#basis-chart').clientWidth):800,h=compact?340:355,left=compact?43:60,right=compact?15:35,top=63,bottom=62;
   const x=n=>left+n/2*(w-left-right);
   const y=n=>h-bottom-(Math.log10(n)-Math.log10(.8))/(2-Math.log10(.8))*(h-top-bottom);
-  let svg=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-labelledby="basis-title basis-desc"><title id="basis-title">Branch scaling at flow time ${data.t.toFixed(2)}</title><desc id="basis-desc">Relative velocity MSE, logarithmic y-axis. Measured scales ${data.scales.join(', ')}. Spatial branch: ${data.spatial.map(v=>v.toFixed(3)).join(', ')}. Spectral branch: ${data.spectral.map(v=>v.toFixed(3)).join(', ')}. The other branch is unchanged. Connected markers show measured means, not additional experiments.</desc><text x="${left}" y="17" fill="#5e6b63" font-size="12">Relative velocity MSE · log scale</text>`;
-  svg+=`<line x1="${left}" x2="${left+24}" y1="38" y2="38" stroke="#a7806b" stroke-width="2"/><text x="${left+31}" y="42" fill="#5e6b63" font-size="11">Spatial</text><line x1="${left+111}" x2="${left+135}" y1="38" y2="38" stroke="#526d60" stroke-width="2" stroke-dasharray="6 3"/><text x="${left+142}" y="42" fill="#5e6b63" font-size="11">Spectral</text>`;
-  for(const v of [1,2,5,10,20,50,100])svg+=`<line x1="${left}" x2="${w-right}" y1="${y(v)}" y2="${y(v)}" stroke="#d0d8c9" stroke-width="${v===1?1.5:.7}"/><text x="${left-9}" y="${y(v)+4}" text-anchor="end" fill="#5e6b63" font-size="11">${v}</text>`;
-  for(const v of [0,.5,1,1.5,2])svg+=`<text x="${x(v)}" y="${h-bottom+22}" text-anchor="middle" fill="#5e6b63" font-size="11">${v.toFixed(1)}</text>`;
-  svg+=`<line x1="${x(1)}" x2="${x(1)}" y1="${top}" y2="${h-bottom}" stroke="#9ba694" stroke-dasharray="3 4"/><text x="${(left+w-right)/2}" y="${h-8}" text-anchor="middle" fill="#5e6b63" font-size="12">Branch scale α · 1 = unchanged</text>`;
-  for(const [key,color,dash] of [['spatial','#a7806b',''],['spectral','#526d60','6 3']]){
+  let svg=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-labelledby="basis-title basis-desc"><title id="basis-title">Branch scaling at flow time ${data.t.toFixed(2)}</title><desc id="basis-desc">Relative velocity MSE, logarithmic y-axis. Measured scales ${data.scales.join(', ')}. Spatial branch: ${data.spatial.map(v=>v.toFixed(3)).join(', ')}. Spectral branch: ${data.spectral.map(v=>v.toFixed(3)).join(', ')}. The other branch is unchanged. Connected markers show measured means, not additional experiments.</desc><text x="${left}" y="17" fill="${PLOT.muted}" font-size="12">Relative velocity MSE · log scale</text>`;
+  svg+=`<line x1="${left}" x2="${left+24}" y1="38" y2="38" stroke="${PLOT.secondary}" stroke-width="2"/><text x="${left+31}" y="42" fill="${PLOT.muted}" font-size="11">Spatial</text><line x1="${left+111}" x2="${left+135}" y1="38" y2="38" stroke="${PLOT.ours}" stroke-width="2" stroke-dasharray="6 3"/><text x="${left+142}" y="42" fill="${PLOT.muted}" font-size="11">Spectral</text>`;
+  for(const v of [1,2,5,10,20,50,100])svg+=`<line x1="${left}" x2="${w-right}" y1="${y(v)}" y2="${y(v)}" stroke="${PLOT.grid}" stroke-width="${v===1?1.5:.7}"/><text x="${left-9}" y="${y(v)+4}" text-anchor="end" fill="${PLOT.muted}" font-size="11">${v}</text>`;
+  for(const v of [0,.5,1,1.5,2])svg+=`<text x="${x(v)}" y="${h-bottom+22}" text-anchor="middle" fill="${PLOT.muted}" font-size="11">${v.toFixed(1)}</text>`;
+  svg+=`<line x1="${x(1)}" x2="${x(1)}" y1="${top}" y2="${h-bottom}" stroke="${PLOT.axis}" stroke-dasharray="3 4"/><text x="${(left+w-right)/2}" y="${h-8}" text-anchor="middle" fill="${PLOT.muted}" font-size="12">Branch scale α · 1 = unchanged</text>`;
+  for(const [key,color,dash] of [['spatial',PLOT.secondary,''],['spectral',PLOT.ours,'6 3']]){
     const coords=data.scales.map((s,i)=>`${x(s)},${y(data[key][i])}`).join(' ');
     svg+=`<polyline points="${coords}" stroke="${color}" stroke-width="2" stroke-dasharray="${dash}" fill="none"/>`;
     svg+=data.scales.map((s,i)=>`<circle cx="${x(s)}" cy="${y(data[key][i])}" r="3.5" fill="${color}"><title>${key} scale ${s}: ${data[key][i].toFixed(4)}×</title></circle>`).join('');

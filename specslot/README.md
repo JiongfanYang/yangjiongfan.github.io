@@ -15,7 +15,7 @@ Then open `http://127.0.0.1:8765/specslot/`. Use HTTP, not `file://`, because be
 ## Files
 
 - `index.html`: page content, author links, galleries, resources, and citation.
-- `styles.css`: responsive light/Morandi visual design.
+- `styles.css`: responsive white/cool-gray design with restrained blue and purple accents.
 - `script.js`: method tabs, benchmark and mechanism charts, full-prompt gallery, paired samples, image viewer, citation copying, and video configuration.
 - `carousel.js`: shared progress-led navigation and automatic timing for both galleries.
 - `results.js`: exact benchmark values from the current paper.
