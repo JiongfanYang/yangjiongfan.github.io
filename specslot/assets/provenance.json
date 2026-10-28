@@ -1,0 +1,447 @@
+[
+  {
+    "asset": "hero-1.webp",
+    "source": "generated_dpg/midjourney35.png",
+    "crop": [
+      256,
+      0,
+      512,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "hero-2.webp",
+    "source": "generated_dpg/midjourney17.png",
+    "crop": [
+      256,
+      0,
+      512,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "hero-3.webp",
+    "source": "generated_dpg/diffusiondb15.png",
+    "crop": [
+      256,
+      0,
+      512,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "hero-4.webp",
+    "source": "generated_dpg/diffusiondb4.png",
+    "crop": [
+      256,
+      256,
+      512,
+      512
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "hero-5.webp",
+    "source": "generated_dpg/diffusiondb33.png",
+    "crop": [
+      256,
+      256,
+      512,
+      512
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "hero-6.webp",
+    "source": "generated_dpg/midjourney26.png",
+    "crop": [
+      256,
+      0,
+      512,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney7.webp",
+    "source": "generated_dpg/midjourney7.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney7-single.webp",
+    "source": "generated_dpg/midjourney7.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney12.webp",
+    "source": "generated_dpg/midjourney12.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney12-single.webp",
+    "source": "generated_dpg/midjourney12.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney17.webp",
+    "source": "generated_dpg/midjourney17.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney17-single.webp",
+    "source": "generated_dpg/midjourney17.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney20.webp",
+    "source": "generated_dpg/midjourney20.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney20-single.webp",
+    "source": "generated_dpg/midjourney20.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney23.webp",
+    "source": "generated_dpg/midjourney23.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney23-single.webp",
+    "source": "generated_dpg/midjourney23.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney25.webp",
+    "source": "generated_dpg/midjourney25.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney25-single.webp",
+    "source": "generated_dpg/midjourney25.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney29.webp",
+    "source": "generated_dpg/midjourney29.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney29-single.webp",
+    "source": "generated_dpg/midjourney29.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "midjourney30.webp",
+    "source": "generated_dpg/midjourney30.png",
+    "crop": null,
+    "size": [
+      512,
+      512
+    ]
+  },
+  {
+    "asset": "midjourney30-single.webp",
+    "source": "generated_dpg/midjourney30.png",
+    "crop": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "indigo-bunting-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01000.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "indigo-bunting-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01000.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "keeshond-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01034.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "keeshond-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01034.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "lacewing-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01065.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "lacewing-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01065.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "ocean-liner-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01106.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "ocean-liner-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01106.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "lionfish-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01111.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "lionfish-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01111.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "medicine-chest-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01183.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "medicine-chest-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01183.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "mink-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01211.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "mink-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01211.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "mountain-tent-specslot.webp",
+    "source": "image_256/sd-hybrid-output-w256-k4-b1536-input-mix-no-merge-120-seed0/images/01245.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "mountain-tent-jitcm.webp",
+    "source": "image_256/jit-cm-125g-256-120-seed0/images/01245.png",
+    "crop": null,
+    "size": [
+      256,
+      256
+    ]
+  },
+  {
+    "asset": "architecture.png",
+    "source": "6942_SpecSlot/assets/architecture.png",
+    "crop": null
+  },
+  {
+    "asset": "allocation.png",
+    "source": "6942_SpecSlot/assets/allocation.png",
+    "crop": null
+  },
+  {
+    "asset": "SpecSlot.pdf",
+    "source": "paper_arxiv/main.pdf",
+    "crop": null
+  },
+  {
+    "asset": "hybrid-mechanism.png",
+    "source": "paper_arxiv/figures/fig_hybrid_mechanism.pdf",
+    "crop": null,
+    "size": [2800, 847],
+    "note": "Faithful PDF rasterization; no plot data or labels modified."
+  },
+  {
+    "asset": "hybrid-mechanism.pdf",
+    "source": "paper_arxiv/figures/fig_hybrid_mechanism.pdf",
+    "crop": null,
+    "note": "Original Figure 7 PDF copied unchanged."
+  },
+  {
+    "asset": "video-poster.webp",
+    "source": "Composite of hero sources",
+    "note": "Layout-only crop and resize; original generations unretouched."
+  }
+]

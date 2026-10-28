@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>Read, Allocate, Route: Role-Coupled Tokenization for Pixel-Space Generative Transformers</title>
+  <meta name="description" content="SpecSlot: role-coupled tokenization for pixel-space generative Transformers. Spatial anchors, spectral output roles, and carrier routing for ImageNet and text-to-image generation.">
+  <link rel="canonical" href="https://yangjiongfan.site/specslot/">
+  <meta property="og:title" content="Read, Allocate, Route: Role-Coupled Tokenization for Pixel-Space Generative Transformers">
+  <meta property="og:description" content="Introducing SpecSlot: tokenization as a quality–compute allocation problem. Explore the method, evidence, and generated images.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yangjiongfan.site/specslot/">
+  <meta property="og:image" content="https://yangjiongfan.site/specslot/assets/video-poster.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="script.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="opening" id="opening" hidden aria-hidden="true"><div class="opening-words"><span>Read.</span><span>Allocate.</span><span>Route.</span></div><div class="opening-slots"><i></i><i></i><i></i><i></i></div></div>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="SpecSlot home"><img src="assets/mark.svg" alt="" width="28" height="28">SpecSlot</a>
+    <nav aria-label="Main navigation">
+      <a href="#overview">Overview</a><a href="#method">Method</a><a href="#results">Results</a><a href="#mechanisms">Insights</a><a href="#gallery">Gallery</a><a href="#video">Video</a>
+    </nav>
+    <a class="nav-code" href="https://github.com/JiongfanYang/SpecSlot" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a>
+    <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy container">
+        <h1 id="hero-title"><span class="title-main">Read, Allocate, Route:</span><span class="title-sub">Role-Coupled Tokenization for<br class="title-break"> Pixel-Space Generative Transformers</span></h1>
+        <div class="authors">
+          <a href="https://yangjiongfan.site">Jiongfan Yang<sup>1,3</sup></a>
+          <a href="https://weichenfan.github.io/Weichen/">Weichen Fan<sup>2</sup></a>
+          <a href="https://paranioar.github.io/">Haiwen Diao<sup>2</sup></a>
+          <a href="https://caizhongang.com/">Zhongang Cai<sup>3</sup></a>
+          <a href="https://liuziwei7.github.io/">Ziwei Liu<sup>2,✉</sup></a>
+        </div>
+        <p class="affiliations"><span><sup>1</sup> Peking University</span><span><sup>2</sup> Nanyang Technological University</span><span><sup>3</sup> SenseTime</span></p>
+        <div class="resource-links">
+          <a class="button primary" href="assets/SpecSlot.pdf" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a>
+          <a class="button" href="https://github.com/JiongfanYang/SpecSlot" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-code"/></svg>Code</a>
+          <a class="button" href="https://huggingface.co/Gokottaw434/SpecSlot" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-download"/></svg>Models</a>
+        </div>
+      </div>
+      <div class="hero-gallery" aria-label="Selected SpecSlot text-to-image generations">
+        <button class="sample zoomable" data-image="assets/hero-1.webp" data-prompt-id="midjourney35" data-caption="Text-to-image · A pastel landscape" aria-label="Enlarge pastel landscape and read its prompt"><img src="assets/hero-1.webp" alt="Pink trees beside a winding river and distant mountains" width="256" height="256" fetchpriority="high"></button>
+        <button class="sample zoomable" data-image="assets/hero-2.webp" data-prompt-id="midjourney17" data-caption="Text-to-image · A floating airship" aria-label="Enlarge airship and read its prompt"><img src="assets/hero-2.webp" alt="Golden airship floating above a fantastical city" width="256" height="256" fetchpriority="high"></button>
+        <button class="sample zoomable" data-image="assets/hero-3.webp" data-prompt-id="diffusiondb15" data-caption="Text-to-image · An imagined creature" aria-label="Enlarge imagined creature and read its prompt"><img src="assets/hero-3.webp" alt="Colorful aquatic creature with curling tentacles" width="256" height="256"></button>
+        <button class="sample zoomable" data-image="assets/hero-4.webp" data-prompt-id="diffusiondb4" data-caption="Text-to-image · A painterly portrait" aria-label="Enlarge portrait and read its prompt"><img src="assets/hero-4.webp" alt="Painterly portrait with flowing hair and muted colors" width="256" height="256"></button>
+        <button class="sample zoomable" data-image="assets/hero-5.webp" data-prompt-id="diffusiondb33" data-caption="Text-to-image · A night cityscape" aria-label="Enlarge cityscape and read its prompt"><img src="assets/hero-5.webp" alt="Neon-lit street between tall futuristic buildings" width="256" height="256"></button>
+        <button class="sample zoomable" data-image="assets/hero-6.webp" data-prompt-id="midjourney26" data-caption="Text-to-image · Fantasy architecture" aria-label="Enlarge fantasy architecture and read its prompt"><img src="assets/hero-6.webp" alt="Fairytale domes and towers among colorful trees" width="256" height="256"></button>
+      </div>
+    </section>
+
+    <section class="overview section container" id="overview" aria-labelledby="overview-title">
+      <div class="overview-card">
+      <h2 id="overview-title">Overview</h2>
+      <p class="overview-copy">Pixel-space generative Transformers typically use one token per image patch, so capturing finer detail requires more tokens and makes global attention increasingly expensive. We observe that finer detail does not necessarily require more global communication: low-frequency structure benefits from global exchange, while high-frequency detail can be modeled locally. Based on this insight, we introduce SpecSlot, a pixel-space rectified-flow Transformer that decouples output detail from the length of the global attention sequence. SpecSlot expands each spatial anchor into multiple slots, each assigned a disjoint band of DCT coefficients; this separates anchor density from spectral subdivision. Only the lowest-frequency slot from each anchor participates in global attention, while all slots interact locally. This allows the model to increase spectral detail without enlarging the global sequence. A spatial head further adds a local correction to the spectral prediction, while the generative state, target, and loss remain in pixel space.</p>
+      </div>
+      <div class="highlights" aria-label="Key results">
+      <a href="#results" class="highlight" data-result-link="imagenet512"><span class="eyebrow">ImageNet-512 · vs. JiT-CM</span><span class="metric">2.84<span> lower FID</span></span><p>9.14 vs. 11.98, at lower forward cost.</p></a>
+      <a href="#results" class="highlight" data-result-link="imagenet512"><span class="eyebrow">ImageNet-512 · vs. JiT-B/16</span><span class="metric">38.2<span>% fewer FLOPs</span></span><p>With a FID gap of just 0.69.</p></a>
+      <a href="#results" class="highlight" data-result-link="t2i"><span class="eyebrow">Text-to-image · vs. JiT-B/8</span><span class="metric">62.21<span> DPG-Bench</span></span><p>+1.06 points, with 40.6% fewer FLOPs.</p></a>
+      </div>
+    </section>
+
+    <section class="method section" id="method" aria-labelledby="method-title">
+      <div class="container">
+        <div class="section-heading"><h2 id="method-title">Tokenization<br><em>as allocation.</em></h2><p class="section-lead">A patch size should not have to decide both output detail and global communication.</p></div>
+        <div class="allocation-principle"><p>Finer detail need not require more global communication: low-frequency structure benefits from global exchange, while high-frequency detail can be modeled locally. SpecSlot turns this insight into an allocation of <strong>N = W × K</strong> image tokens: <strong>W sets spatial anchor density</strong>, and <strong>K sets spectral subdivision</strong>. At fixed W, more slots leave the global image sequence at W carriers. At fixed N, more anchors mean fewer slots per anchor, and the split changes compute cost.</p></div>
+        <button class="diagram allocation-diagram zoomable" data-image="assets/allocation.png" data-caption="Allocation: spatial anchor density and spectral subdivision" aria-label="Enlarge allocation illustration"><img src="assets/allocation.png" alt="Patch-grid tokenization compared with allocation into spatial anchors and spectral slots" width="3000" height="1296" loading="lazy"></button>
+        <div class="method-tabs" role="tablist" aria-label="Method stages">
+          <button role="tab" id="step-read" aria-selected="true" aria-controls="method-detail" data-step="read"><span>01</span>Read</button>
+          <button role="tab" id="step-allocate" aria-selected="false" aria-controls="method-detail" data-step="allocate" tabindex="-1"><span>02</span>Allocate</button>
+          <button role="tab" id="step-route" aria-selected="false" aria-controls="method-detail" data-step="route" tabindex="-1"><span>03</span>Route</button>
+          <button role="tab" id="step-decode" aria-selected="false" aria-controls="method-detail" data-step="decode" tabindex="-1"><span>04</span>Decode</button>
+        </div>
+        <div class="method-detail" id="method-detail" role="tabpanel" aria-labelledby="step-read" tabindex="0"><span class="detail-kicker" id="step-kicker">Read the evidence,<br>then assign roles.</span><p id="step-copy">The input grid should determine where evidence comes from, not how many output roles the model can express. SpecSlot projects non-overlapping image cells into W spatial anchors. An input mixer lets neighboring anchors exchange evidence before each anchor expands into K slot states, with anchor and slot positions added. All K slots thus draw on the same local evidence but take different output roles, separating input density from spectral subdivision.</p><span class="detail-formula" id="step-formula">W anchors × K slots</span></div>
+        <button class="diagram zoomable" data-image="assets/architecture.png" data-caption="SpecSlot architecture · Read, Allocate, Route, Decode" aria-label="Enlarge the SpecSlot architecture diagram"><img src="assets/architecture.png" alt="SpecSlot reads spatial anchors, allocates spectral slots, routes carriers globally and slots locally, then adds spectral and spatial outputs" width="3000" height="800" loading="lazy"><span class="expand-label">View full size <span aria-hidden="true">↗</span></span></button>
+      </div>
+    </section>
+
+    <section class="results section container" id="results" aria-labelledby="results-title">
+      <div class="section-heading"><h2 id="results-title">The quality–compute<br><em>trade-off.</em></h2><div class="segmented" role="tablist" aria-label="Benchmark"><button role="tab" id="tab-imagenet512" aria-selected="true" aria-controls="result-panel" data-result="imagenet512">ImageNet-512</button><button role="tab" id="tab-imagenet256" aria-selected="false" aria-controls="result-panel" data-result="imagenet256" tabindex="-1">ImageNet-256</button><button role="tab" id="tab-t2i" aria-selected="false" aria-controls="result-panel" data-result="t2i" tabindex="-1">Text-to-image</button></div></div>
+      <div id="result-panel" role="tabpanel" aria-labelledby="tab-imagenet512" tabindex="0">
+        <div class="result-layout"><div class="result-story"><span class="result-tag" id="result-tag">ImageNet-512</span><h3 id="result-headline">9.14 FID.<br>135.64 GFLOPs.</h3><p id="result-description">SpecSlot-K4 improves FID by 2.84 over the compute-matched JiT control, using 3.9% fewer forward FLOPs.</p><div class="result-footnote" id="result-takeaway">Only 0.69 FID behind JiT-B/16, at 38.2% lower forward cost.</div></div><div class="chart-wrap"><div id="result-chart" aria-label="Benchmark visualization"></div><p class="chart-note" id="chart-note">Lower FID and lower forward GFLOPs are better.</p></div></div>
+        <div class="data-details" hidden><div class="table-scroll" tabindex="0" aria-label="Scrollable results table"><table id="result-table"><caption class="sr-only">ImageNet-512 benchmark results</caption><thead></thead><tbody></tbody></table></div></div>
+      </div>
+      <p class="protocol" id="results-fallback">Interactive results require JavaScript. The <a href="assets/SpecSlot.pdf">paper PDF</a> contains all benchmark tables.</p>
+    </section>
+
+    <section class="mechanisms section" id="mechanisms" aria-labelledby="mechanisms-title"><div class="container">
+      <div class="section-heading"><h2 id="mechanisms-title">Why these <em>roles?</em></h2><p class="section-lead">Test the carrier, the communication graph, and the two output branches.</p></div>
+      <div class="mechanism-tabs" role="tablist" aria-label="Mechanism evidence"><button role="tab" id="mech-carrier" aria-selected="true" aria-controls="mechanism-panel" data-mechanism="carrier">Why slot 0?</button><button role="tab" id="mech-routing" aria-selected="false" aria-controls="mechanism-panel" data-mechanism="routing" tabindex="-1">Why carrier routing?</button><button role="tab" id="mech-basis" aria-selected="false" aria-controls="mechanism-panel" data-mechanism="basis" tabindex="-1">Why two output bases?</button></div>
+      <div id="mechanism-panel" role="tabpanel" aria-labelledby="mech-carrier" tabindex="0"><div id="mechanism-content"><p>The paper compares carrier identities, separately trained routing graphs, and fixed-checkpoint output-branch probes. <a href="assets/SpecSlot.pdf#page=11">Read the mechanistic analysis ↗</a></p></div></div>
+    </div></section>
+
+    <section class="gallery section" id="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <div class="section-heading"><h2 id="gallery-title">Text to <em>image.</em></h2><p class="section-lead">Selected generations with their complete DPG-Bench prompts. Each image is 256 × 256.</p></div>
+        <div class="gallery-carousel" id="gallery-carousel" aria-roledescription="carousel" aria-label="Text-to-image examples">
+        <div class="prompt-showcase" id="prompt-panel" role="tabpanel" aria-labelledby="sample-midjourney7" tabindex="0">
+          <button class="prompt-image zoomable" id="gallery-image-button" data-image="assets/midjourney7.webp" data-prompt-id="midjourney7" data-caption="A place of worship · Four generations" aria-label="Enlarge four generations for the displayed prompt"><img id="gallery-image" src="assets/midjourney7.webp" alt="Four generations of an extraterrestrial place of worship" width="512" height="512" loading="lazy"></button>
+          <div class="prompt-copy"><div class="prompt-heading"><h3>Prompt</h3></div><blockquote id="gallery-prompt">Within a grand extraterrestrial place of worship, a group of alien beings is depicted in reverent prayer, illuminated by beams of light filtering through stained glass panels featuring cosmic motifs. The advanced alien architecture captures the imagination with soaring arches and embedded technology, rendered in striking yellow and blue tones that highlight the meticulous detail and realism of the scene. This masterpiece of science fiction, brought to life with the precision of Octane rendering software at an 8K resolution, showcases an awe-inspiring tableau, reminiscent of the most sophisticated pieces found on the ArtStation platform.</blockquote><a id="prompt-source" href="https://github.com/TencentQQGYLab/ELLA/blob/main/dpg_bench/prompts/midjourney7.txt" target="_blank" rel="noopener noreferrer">Original prompt ↗</a></div>
+        </div>
+        <div class="gallery-navigation">
+          <button class="gallery-arrow" id="gallery-prev" aria-label="Previous text-to-image example">←</button>
+          <span class="carousel-progress" aria-hidden="true"><i id="gallery-progress"></i></span>
+          <span class="gallery-position" id="sample-position">01 / 08</span>
+          <button class="gallery-arrow" id="gallery-next" aria-label="Next text-to-image example">→</button>
+        </div>
+        <div class="gallery-thumbnails" role="tablist" aria-label="Text-to-image examples">
+          <button id="sample-midjourney7" role="tab" aria-selected="true" aria-controls="prompt-panel" data-sample="midjourney7"><img src="assets/midjourney7-single.webp" alt="" width="256" height="256" loading="lazy"><span>Worship</span></button>
+          <button id="sample-midjourney20" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney20" tabindex="-1"><img src="assets/midjourney20-single.webp" alt="" width="256" height="256" loading="lazy"><span>Landscape</span></button>
+          <button id="sample-midjourney17" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney17" tabindex="-1"><img src="assets/midjourney17-single.webp" alt="" width="256" height="256" loading="lazy"><span>Airship</span></button>
+          <button id="sample-midjourney12" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney12" tabindex="-1"><img src="assets/midjourney12-single.webp" alt="" width="256" height="256" loading="lazy"><span>Cat</span></button>
+          <button id="sample-midjourney29" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney29" tabindex="-1"><img src="assets/midjourney29-single.webp" alt="" width="256" height="256" loading="lazy"><span>Library</span></button>
+          <button id="sample-midjourney23" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney23" tabindex="-1"><img src="assets/midjourney23-single.webp" alt="" width="256" height="256" loading="lazy"><span>Skyscraper</span></button>
+          <button id="sample-midjourney25" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney25" tabindex="-1"><img src="assets/midjourney25-single.webp" alt="" width="256" height="256" loading="lazy"><span>Character</span></button>
+          <button id="sample-midjourney30" role="tab" aria-selected="false" aria-controls="prompt-panel" data-sample="midjourney30" tabindex="-1"><img src="assets/midjourney30-single.webp" alt="" width="256" height="256" loading="lazy"><span>Temple</span></button>
+        </div>
+        </div>
+
+        <section class="pair-section" aria-labelledby="pair-title">
+          <div class="section-heading"><h2 id="pair-title">ImageNet-256<br><em>comparisons.</em></h2><p class="section-lead">Same class label and noise draw.</p></div>
+          <div class="gallery-carousel" id="pair-carousel" aria-roledescription="carousel" aria-label="Paired ImageNet examples">
+          <div class="pair-images" id="pair-panel" role="tabpanel" aria-labelledby="pair-ocean-liner" tabindex="0">
+            <figure><button class="zoomable" id="pair-ours-button" data-image="assets/ocean-liner-specslot.webp" data-caption="Ocean liner · SpecSlot W256/K4" aria-label="Enlarge SpecSlot ocean liner"><img id="pair-ours" src="assets/ocean-liner-specslot.webp" alt="SpecSlot generation of an ocean liner" width="256" height="256" loading="lazy"></button><figcaption><span class="ours-dot"></span><strong>SpecSlot</strong><span>W256/K4</span></figcaption></figure>
+            <figure><button class="zoomable" id="pair-baseline-button" data-image="assets/ocean-liner-jitcm.webp" data-caption="Ocean liner · JiT-CM" aria-label="Enlarge JiT-CM ocean liner"><img id="pair-baseline" src="assets/ocean-liner-jitcm.webp" alt="JiT-CM generation of an ocean liner" width="256" height="256" loading="lazy"></button><figcaption><span class="baseline-dot"></span><strong>JiT-CM</strong><span>Compute-matched control</span></figcaption></figure>
+          </div>
+          <div class="gallery-navigation">
+            <button class="gallery-arrow" id="pair-prev" aria-label="Previous ImageNet comparison">←</button>
+            <span class="carousel-progress" aria-hidden="true"><i id="pair-progress"></i></span>
+            <span class="gallery-position" id="pair-position">01 / 08</span>
+            <button class="gallery-arrow" id="pair-next" aria-label="Next ImageNet comparison">→</button>
+          </div>
+          <div class="gallery-thumbnails" role="tablist" aria-label="ImageNet examples">
+            <button role="tab" id="pair-ocean-liner" data-pair="ocean-liner" aria-selected="true" aria-controls="pair-panel"><img src="assets/ocean-liner-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Ocean liner</span></button>
+            <button role="tab" id="pair-indigo-bunting" data-pair="indigo-bunting" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/indigo-bunting-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Indigo bunting</span></button>
+            <button role="tab" id="pair-lionfish" data-pair="lionfish" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/lionfish-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Lionfish</span></button>
+            <button role="tab" id="pair-lacewing" data-pair="lacewing" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/lacewing-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Lacewing</span></button>
+            <button role="tab" id="pair-medicine-chest" data-pair="medicine-chest" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/medicine-chest-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Medicine chest</span></button>
+            <button role="tab" id="pair-mountain-tent" data-pair="mountain-tent" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/mountain-tent-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Mountain tent</span></button>
+            <button role="tab" id="pair-keeshond" data-pair="keeshond" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/keeshond-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Keeshond</span></button>
+            <button role="tab" id="pair-mink" data-pair="mink" aria-selected="false" aria-controls="pair-panel" tabindex="-1"><img src="assets/mink-specslot.webp" alt="" width="256" height="256" loading="lazy"><span>Mink</span></button>
+          </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="video section container" id="video" aria-labelledby="video-title">
+      <div class="section-heading"><h2 id="video-title">Video <em>overview.</em></h2><span class="status-pill" id="video-status">Coming soon</span></div>
+      <div class="video-frame" id="video-frame">
+        <img class="video-poster" src="assets/video-poster.webp" alt="Montage of SpecSlot generated samples; video overview not yet available" width="1536" height="864" loading="lazy">
+        <div class="video-placeholder" id="video-placeholder"><span class="video-monogram" aria-hidden="true"><img src="assets/mark.svg" alt="" width="48" height="48"></span><h3>A closer look is on its way.</h3><p>Video overview · Coming soon</p></div>
+        <video id="overview-video" hidden controls playsinline preload="none" poster="assets/video-poster.webp" aria-label="SpecSlot video overview"></video>
+      </div>
+    </section>
+
+    <section class="resources section" id="resources" aria-labelledby="resources-title"><div class="container">
+      <div class="section-heading"><h2 id="resources-title">Paper, code <em>& models.</em></h2></div>
+      <div class="resource-grid"><a href="assets/SpecSlot.pdf" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-paper"/></svg><span>Paper</span><small>Method & experiments</small><b aria-hidden="true">↗</b></a><a href="https://github.com/JiongfanYang/SpecSlot" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-code"/></svg><span>GitHub</span><small>Training & evaluation</small><b aria-hidden="true">↗</b></a><a href="https://huggingface.co/Gokottaw434/SpecSlot" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true"><use href="#i-download"/></svg><span>Models</span><small>ImageNet & text-to-image</small><b aria-hidden="true">↗</b></a></div>
+      <details class="citation"><summary><span>Cite this work</span><span class="plus" aria-hidden="true">+</span></summary><div class="citation-code"><button class="copy-button" id="copy-citation" type="button">Copy BibTeX</button><pre id="bibtex">@article{yang2026specslot,
+  title = {Read, Allocate, Route: Role-Coupled Tokenization
+           for Pixel-Space Generative Transformers},
+  author = {Yang, Jiongfan and Fan, Weichen and Diao, Haiwen
+            and Cai, Zhongang and Liu, Ziwei},
+  year = {2026}
+}</pre><p id="copy-status" role="status" aria-live="polite"></p></div></details>
+    </div></section>
+  </main>
+  <footer class="container"><a class="wordmark" href="#top"><img src="assets/mark.svg" alt="" width="25" height="25">SpecSlot</a><p>Read, Allocate, Route.</p><a href="/">Jiongfan Yang <span aria-hidden="true">↗</span></a></footer>
+  <dialog id="lightbox" aria-label="Image viewer"><div class="lightbox-toolbar"><span id="lightbox-caption"></span><div class="lightbox-actions"><button id="lightbox-zoom" aria-pressed="false">Zoom in</button><button id="lightbox-close" aria-label="Close image viewer">Close <span aria-hidden="true">×</span></button></div></div><div class="lightbox-body" tabindex="0" aria-label="Image; scroll to pan when zoomed"><img id="lightbox-image" alt=""></div><div class="lightbox-prompt" id="lightbox-prompt-block" hidden><h3>Prompt</h3><p id="lightbox-prompt"></p></div><a id="lightbox-original" href="#" target="_blank" rel="noopener">Open original image ↗</a></dialog>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol><symbol id="i-paper" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6V3Zm8 0v5h5M9 12h7m-7 4h7"/></symbol></svg>
+</body>
+</html>
