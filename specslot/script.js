@@ -3,9 +3,8 @@ import { PROMPTS } from './prompts.js';
 import { MECHANISMS, BASIS_SCALING } from './mechanisms.js';
 import { createCarousel } from './carousel.js';
 
-// Set a local or hosted MP4 URL here when the overview is ready.
-// Example: src: 'assets/specslot-overview.mp4', captions: 'assets/overview.en.vtt'
-const VIDEO = { src: '', captions: '' };
+// Final overview, with English narration and quiet piano; no caption track.
+const VIDEO = { src: 'assets/specslot-overview.mp4', captions: '' };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
