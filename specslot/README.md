@@ -24,19 +24,17 @@ Then open `http://127.0.0.1:8765/specslot/`. Use HTTP, not `file://`, because be
 - `assets/SpecSlot.pdf`: snapshot of the current arXiv manuscript. Replace when the paper changes.
 - `assets/provenance.json`: source and crop record for the generated images. WebP images are lossless conversions; no generated content is retouched. The video poster alone is a resized, layout-only montage.
 
-## Add the video
+## Video overview
 
-1. Put the MP4 in `assets/` (or use a hosted video URL for a large file).
-2. Edit the `VIDEO` object at the top of `script.js`:
+The final SpecSlot overview (V4.1) is included as `assets/specslot-overview.mp4` and enabled through the `VIDEO` object in `script.js`. It uses the existing montage cover and native playback controls, with no autoplay or caption track. The player keeps its 16:9 aspect ratio on desktop and mobile.
 
-```js
-const VIDEO = {
-  src: 'assets/specslot-overview.mp4',
-  captions: 'assets/overview.en.vtt', // optional, recommended
-};
-```
+- Duration: 4:15.333; 1920 × 1080 at 30 fps.
+- Encoding: H.264/yuv420p and AAC stereo, with MP4 fast-start metadata.
+- Audio: English narration and quiet original piano, already mixed into the MP4.
+- Size: 18,733,486 bytes.
+- SHA-256: `7e7d0647d3509d6abbbed39f9c96153abe5dcd32355d42506c1c982b3b59b9ce`.
 
-With an empty `src`, the page explicitly shows **Video coming soon**, not a pretend player. Setting `src` replaces the placeholder with a native, user-controlled video. No autoplay is enabled.
+To replace the video later, update the MP4 and the `VIDEO.src` path if needed. `VIDEO.captions` is optional and currently empty. An empty `VIDEO.src` restores the coming-soon placeholder. No framework, external video service or build step is required.
 
 ## Content updates
 
@@ -54,7 +52,7 @@ With an empty `src`, the page explicitly shows **Video coming soon**, not a pret
 
 ## Deployment
 
-The directory works with the homepage's existing static hosting. Review and merge the `feat/specslot-project-page` branch through the normal deployment process. No deployment or push is performed by creating these files.
+The directory works with the homepage's existing static hosting. Review and merge the `feat/specslot-final-video` branch into `main` through the normal deployment process. The video is served with the other static page assets.
 
 ## Review performed
 
