@@ -46,7 +46,7 @@ To replace the video later, update the MP4 and the `VIDEO.src` path if needed. `
 - Gallery prompts match the original ELLA DPG-Bench prompt files. The selected qualitative images come from the epoch-550 export; the quantitative T2I table reports the paper's 400-epoch evaluation. Do not relabel the gallery as that evaluation.
 - T2I advances every 8 seconds and ImageNet every 5 seconds, using a faint, non-interactive progress line. There are no play/pause controls or application-level pause conditions. Hover, focus, scrolling, and opening an enlarged image do not interrupt the background carousel. Manual selection starts a fresh interval; the enlarged image stays on the selected sample. The next slide is prepared in advance, and ImageNet pairs are decoded together and committed atomically. The progress line and slide changes share one clock. Browsers may throttle animation in inactive tabs.
 - The paired ImageNet images share class labels and noise draws, as documented in the paper. All galleries are selected illustrations.
-- No arXiv ID is assumed. The Paper buttons currently link to the bundled PDF; change them when the arXiv URL is available.
+- The Paper buttons link to [arXiv:2610.40647](https://arxiv.org/abs/2610.40647). `assets/SpecSlot.pdf` remains available for page-specific references.
 - Typography uses Google Fonts (DM Sans / Newsreader), with local system fallbacks. All images, diagrams, data, and scripts are served from this subdirectory.
 - Opening and scroll animations respect reduced-motion preferences. The brief opening animation is nonblocking and appears once per browser session.
 
